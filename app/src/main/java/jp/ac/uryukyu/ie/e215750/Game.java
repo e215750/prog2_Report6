@@ -23,14 +23,12 @@ public class Game {
     public void numberGeneration(){
         problem = 1;
         Random r = new Random();
-        isNot_finish = true;
-        
+        isNot_finish = true;   
         for(int i=0; i<5; i++){
             for(int j=0; j<r.nextInt(5); j++){
                 problem *= numbers[i];
             }
         }
-        //System.out.println(problem);
     }
 
 /**
@@ -69,7 +67,6 @@ public class Game {
         int check_number = problem % numbers[choise - 1];
         if(check_number == 0){
             problem /= numbers[choise - 1];
-            //System.out.println("--------------");
             System.out.println(problem);
             if(problem == 1){
                 System.out.println("クリア!");
@@ -82,7 +79,9 @@ public class Game {
             isNot_finish = false;
         }
     }
-
+/**
+ * 何回ゲームをクリアすることが出来たかを表示する。
+ */
     public void resultDisplay(){
         System.out.print("あなたの得点は" + point + "です。");
     }
