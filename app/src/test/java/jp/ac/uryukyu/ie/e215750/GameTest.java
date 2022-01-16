@@ -6,6 +6,11 @@ package jp.ac.uryukyu.ie.e215750;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-//class GameTest {
-//    @Test
-//}
+class GameTest {
+    @Test
+    public void commandExecutionTest(){
+        Game Test = new Game();
+        Test.choise = 8;
+        assertThrows(Exception.class,() -> Test.commandExecution());
+    }
+}
