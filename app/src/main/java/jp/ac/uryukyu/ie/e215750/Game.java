@@ -6,19 +6,22 @@ import java.util.InputMismatchException;
 
 /** 
  * 素因数分解ゲーム
- * ランダムに生成された数を2、3、5、7、11の5つの数字で割っていき、
- * 1になるまで割ることができるとクリアとなる。
+ * ランダムに生成された数を簡単モードなら{2、3、5、7、11}、難しいモードなら{2、3、5、7、11、13、17}
+ * のどれかを選んで割っていき、最終的に1になるまで割ることができるとクリアとなる。
 */
 public class Game {
-    int problem;
-    int choise;
-    int point;
-    int level;
-    int[] easy_numbers = {2,3,5,7,11};
-    int[] hard_numbers = {2,3,5,7,11,13,17}; 
-    boolean isNot_finish = true;
-    Scanner scanner;
+    int problem;//問題の数字
+    int point;//正解数
+    int choice;//ユーザーが選択した数字
+    int level;//ユーザーが選択したレベル
+    int[] easy_numbers = {2,3,5,7,11};//簡単モードで問題で使用する素数
+    int[] hard_numbers = {2,3,5,7,11,13,17}; //難しいモードでしようする素数
+    boolean isNot_finish = true;//ゲームが終了するかどうかの判定
+    Scanner scanner;//Scannerクラスを使用する際に必要
 
+/**
+ * 簡単モードか難しいモードを選択する。
+ */
     public void levelSelect(){
         scanner = new Scanner(System.in);
         System.out.println("素因数分解ゲーム!!");
@@ -26,13 +29,18 @@ public class Game {
         System.out.println("難易度を選択してください");
         System.out.println("1:簡単   2:難しい");
         level = scanner.nextInt();
+        if((level < 1)||(2 < level)){
+            System.out.println("1または2を選択してください");
+            System.exit(0);
+        }
     }
     
 /**
- * 2、3、5、7、11で割り切れるランダムな数字を生成する。
+ * 簡単モード：2、3、5、7、11で割り切れるランダムな数字を生成する。
+ * 難しいモード：2、3、5、7、11、13、17で割り切れるランダムな数字を生成する。
  */
     public void numberGeneration(){
-        int number = 0;
+        int number;
         problem = 1;
         Random r = new Random();
         isNot_finish = true;   
@@ -69,8 +77,8 @@ public class Game {
                 sequence += 1;
             }
             try{
-                choise = scanner.nextInt();       
-                if((choise < 1) || (5 < choise)){
+                choice = scanner.nextInt();       
+                if((choice < 1) || (5 < choice)){
                     throw new Exception();
                 }
             }catch(InputMismatchException e){
@@ -86,8 +94,8 @@ public class Game {
                 sequence += 1;
             }
             try{
-                choise = scanner.nextInt();       
-                if((choise < 1) || (7 < choise)){
+                choice = scanner.nextInt();       
+                if((choice < 1) || (7 < choice)){
                     throw new Exception();
                 }
             }catch(InputMismatchException e){
@@ -106,9 +114,9 @@ public class Game {
      */
     public void commandExecution(){
         if(level == 1){
-            int check_number = problem % easy_numbers[choise - 1];
+            int check_number = problem % easy_numbers[choice - 1];
             if(check_number == 0){
-                problem /= easy_numbers[choise - 1];
+                problem /= easy_numbers[choice - 1];
                 System.out.println(problem);
                 if(problem == 1){
                     System.out.println("クリア!");
@@ -116,14 +124,14 @@ public class Game {
                     isNot_finish = false;
                 }
             }else{
-                System.out.println(easy_numbers[choise - 1] + "では割ることが出来なかった!");
+                System.out.println(easy_numbers[choice - 1] + "では割ることが出来なかった!");
                 System.out.println("クリア失敗");
                 isNot_finish = false;
             }
         }else{
-            int check_number = problem % hard_numbers[choise - 1];
+            int check_number = problem % hard_numbers[choice - 1];
             if(check_number == 0){
-                problem /= hard_numbers[choise - 1];
+                problem /= hard_numbers[choice - 1];
                 System.out.println(problem);
                 if(problem == 1){
                     System.out.println("クリア!");
@@ -131,7 +139,7 @@ public class Game {
                     isNot_finish = false;
                 }
             }else{
-                System.out.println(hard_numbers[choise - 1] + "では割ることが出来なかった!");
+                System.out.println(hard_numbers[choice - 1] + "では割ることが出来なかった!");
                 System.out.println("クリア失敗");
                 isNot_finish = false;
             }
@@ -142,6 +150,6 @@ public class Game {
  * 何回ゲームをクリアすることが出来たかを表示する。
  */
     public void resultDisplay(){
-        System.out.print("あなたの得点は" + point + "です。");
+        System.out.print("あなたの得点は" + point + "点です。");
     }
 }

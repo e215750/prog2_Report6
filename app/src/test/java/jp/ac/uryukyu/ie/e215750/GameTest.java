@@ -10,7 +10,8 @@ class GameTest {
     @Test
     public void commandExecutionTest(){
         Game Test = new Game();
-        Test.choise = 8;
+        Test.level = 1;
+        Test.choice = 6;
         assertThrows(Exception.class,() -> Test.commandExecution());
     }
 }
