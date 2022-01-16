@@ -12,21 +12,43 @@ import java.util.InputMismatchException;
 public class Game {
     int problem;
     int choise;
-    int point = 0;
-    int[] numbers = {2,3,5,7,11};
+    int point;
+    int level;
+    int[] easy_numbers = {2,3,5,7,11};
+    int[] hard_numbers = {2,3,5,7,11,13,17}; 
     boolean isNot_finish = true;
     Scanner scanner;
+
+    public void levelSelect(){
+        scanner = new Scanner(System.in);
+        System.out.println("素因数分解ゲーム!!");
+        System.out.println();
+        System.out.println("難易度を選択してください");
+        System.out.println("1:簡単   2:難しい");
+        level = scanner.nextInt();
+    }
     
 /**
  * 2、3、5、7、11で割り切れるランダムな数字を生成する。
  */
     public void numberGeneration(){
+        int number = 0;
         problem = 1;
         Random r = new Random();
         isNot_finish = true;   
-        for(int i=0; i<5; i++){
-            for(int j=0; j<r.nextInt(5); j++){
-                problem *= numbers[i];
+        if(level == 1){
+            for(int i=0; i<5; i++){
+                number = (int)Math.pow(easy_numbers[i], r.nextInt(4));
+                if(number != 0){
+                    problem *= number;
+                }
+            }
+        }else{
+            for(int i=0; i<7; i++){
+                number = (int)Math.pow(hard_numbers[i], r.nextInt(3));
+                if(number != 0){
+                    problem *= number;
+                }
             }
         }
     }
@@ -41,21 +63,40 @@ public class Game {
         System.out.println("--------------");
         System.out.println(problem);
         System.out.println("↑を割ることができる数字を選べ!");
-        for(int number : numbers){
-            System.out.println(sequence + ":" + number + "で割る");
-            sequence += 1;
-        }
-        try{
-            choise = scanner.nextInt();        
-            if((choise < 1) || (5 < choise)){
-                throw new Exception();
+        if(level == 1){
+            for(int number : easy_numbers){
+                System.out.println(sequence + ":" + number + "で割る");
+                sequence += 1;
             }
-        }catch(InputMismatchException e){
-            System.out.println("数字を入力してください");
-            System.exit(0);
-        }catch(Exception e){
-            System.out.println("1~5の数字を入力してください");
-            System.exit(0);
+            try{
+                choise = scanner.nextInt();       
+                if((choise < 1) || (5 < choise)){
+                    throw new Exception();
+                }
+            }catch(InputMismatchException e){
+                System.out.println("数字を入力してください");
+                System.exit(0);
+            }catch(Exception e){
+                System.out.println("1~5の数字を入力してください");
+                System.exit(0);
+            }
+        }else{
+            for(int number : hard_numbers){
+                System.out.println(sequence + ":" + number + "で割る");
+                sequence += 1;
+            }
+            try{
+                choise = scanner.nextInt();       
+                if((choise < 1) || (7 < choise)){
+                    throw new Exception();
+                }
+            }catch(InputMismatchException e){
+                System.out.println("数字を入力してください");
+                System.exit(0);
+            }catch(Exception e){
+                System.out.println("1~5の数字を入力してください");
+                System.exit(0);
+            }
         }
     }
 
@@ -64,21 +105,39 @@ public class Game {
      * 割り切れるなら割った後にゲームクリアになるかを判定する。
      */
     public void commandExecution(){
-        int check_number = problem % numbers[choise - 1];
-        if(check_number == 0){
-            problem /= numbers[choise - 1];
-            System.out.println(problem);
-            if(problem == 1){
-                System.out.println("クリア!");
-                point += 1;
+        if(level == 1){
+            int check_number = problem % easy_numbers[choise - 1];
+            if(check_number == 0){
+                problem /= easy_numbers[choise - 1];
+                System.out.println(problem);
+                if(problem == 1){
+                    System.out.println("クリア!");
+                    point += 1;
+                    isNot_finish = false;
+                }
+            }else{
+                System.out.println(easy_numbers[choise - 1] + "では割ることが出来なかった!");
+                System.out.println("クリア失敗");
                 isNot_finish = false;
             }
         }else{
-            System.out.println(numbers[choise - 1] + "では割ることが出来なかった!");
-            System.out.println("クリア失敗");
-            isNot_finish = false;
+            int check_number = problem % hard_numbers[choise - 1];
+            if(check_number == 0){
+                problem /= hard_numbers[choise - 1];
+                System.out.println(problem);
+                if(problem == 1){
+                    System.out.println("クリア!");
+                    point += 1;
+                    isNot_finish = false;
+                }
+            }else{
+                System.out.println(hard_numbers[choise - 1] + "では割ることが出来なかった!");
+                System.out.println("クリア失敗");
+                isNot_finish = false;
+            }
         }
     }
+
 /**
  * 何回ゲームをクリアすることが出来たかを表示する。
  */
